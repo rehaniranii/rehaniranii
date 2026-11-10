@@ -1,0 +1,13 @@
+query($login: String!) {
+  user(login: $login) {
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+        weeks { contributionDays { date contributionCount contributionLevel } }
+      }
+    }
+    repositories(first: 50, ownerAffiliations: OWNER, privacy: PUBLIC, orderBy: {field: PUSHED_AT, direction: DESC}) {
+      nodes { name description url stargazerCount forkCount pushedAt primaryLanguage { name color } }
+    }
+  }
+}
