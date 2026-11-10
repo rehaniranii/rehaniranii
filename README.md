@@ -8,8 +8,8 @@
 
 <img src="cards/monthly.svg" width="100%" alt="Contributions per month, with current streak, longest streak, active days and busiest day">
 
-<a href="https://github.com/rehaniranii/AgroSaathi"><img src="cards/repo-agrosaathi.svg" width="100%" alt="AgroSaathi"></a>
-<a href="https://github.com/rehaniranii/Algo-Trade"><img src="cards/repo-algo-trade.svg" width="100%" alt="Algo-Trade"></a>
-<a href="https://github.com/rehaniranii/the_bigshort"><img src="cards/repo-the_bigshort.svg" width="100%" alt="the_bigshort"></a>
+<a href="https://github.com/rehaniranii/margin.pdf"><img src="cards/repo-margin.pdf.svg" width="100%" alt="margin.pdf"></a>
+<a href="https://github.com/parthpalav/kakashi"><img src="cards/repo-kakashi.svg" width="100%" alt="parthpalav/kakashi"></a>
+<a href="https://github.com/rehaniranii/Morrow"><img src="cards/repo-morrow.svg" width="100%" alt="Morrow"></a>
 
 <img src="cards/graph.svg" width="100%" alt="Contribution graph for the last 12 months">

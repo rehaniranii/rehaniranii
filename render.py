@@ -25,10 +25,10 @@ TILES = [  # (file, label, value, href) -- href is used by README.md
     ("tile-linkedin", "LinkedIn", "in/rehan-irani", "https://www.linkedin.com/in/rehan-irani"),
     ("tile-blog", "Writing", "Blog & notes", SITE + "/blog"),
 ]
-FEATURED = {  # repo name -> blurb (used when the GitHub description is empty)
-    "AgroSaathi": "Farming assistant with weather, soil and region-aware guidance, plus AI plant-disease detection.",
-    "Algo-Trade": "Multi-factor algorithmic trading system with a backtesting engine and dynamic risk management.",
-    "the_bigshort": "Team Renaissance's code for a five-hour ML trading sprint on an emerging-market stock.",
+FEATURED = {  # owner/repo (yours, or one you've contributed to) -> blurb, used when the GitHub description is empty
+    "rehaniranii/margin.pdf": "A free, standalone PDF workspace for editing existing text in place, powered by MuPDF in WebAssembly. No backend, no accounts.",
+    "parthpalav/kakashi": "Check a token before you buy it: a pre-trade risk check for Hedera tokens that spends only inside a mandate a verified human approved.",
+    "rehaniranii/Morrow": "Takes a first-time investor from \u201cwhere do I even start?\u201d to a one-page financial blueprint. Honest, illustrative maths, no stock tips.",
 }
 
 # Colours and fonts from the portfolio site (zinc scale + link blue, Geist / Geist Mono).
@@ -228,13 +228,14 @@ def monthly(days, s, delay):
 
 
 def repo_card(r, delay):
-    desc = r["description"] or FEATURED[r["name"]]
+    desc = r["description"] or FEATURED[r["nameWithOwner"]]
+    title = r["nameWithOwner"].removeprefix(HANDLE[1:] + "/")
     lines = wrap(desc, "sans", 15, W - 80)[:2]
-    c = Card(W, 92 + 22 * len(lines) + 34, f'{r["name"]}: {desc}', delay)
+    c = Card(W, 92 + 22 * len(lines) + 34, f'{title}: {desc}', delay)
     c.add(f'<g class="a-pop"{c.d(0)}><rect x="32" y="32" width="28" height="28" rx="7" class="surface"/>'
           '<path d="M41 39h10v14l-5-3-5 3z" fill="none" stroke="var(--brand)" stroke-width="1.6" '
           'stroke-linejoin="round"/></g>')
-    c.text(74, 53, r["name"], "semi", 20, "fg", delay=.08)
+    c.text(74, 53, title, "semi", 20, "fg", delay=.08)
     for i, line in enumerate(lines):
         c.text(32, 92 + i * 22, line, "sans", 15, "muted", delay=.18 + i * .06)
     y = 92 + 22 * len(lines) + 10
@@ -290,7 +291,7 @@ def main():
     user = json.loads((ROOT / "data/github.json").read_text())["data"]["user"]
     weeks = user["contributionsCollection"]["contributionCalendar"]["weeks"]
     days = [(dt.date.fromisoformat(d["date"]), d["contributionCount"]) for w in weeks for d in w["contributionDays"]]
-    repos = {r["name"]: r for r in user["repositories"]["nodes"]}
+    repos = {r["nameWithOwner"]: r for k in ("repositories", "repositoriesContributedTo") for r in user[k]["nodes"]}
     missing = [n for n in FEATURED if n not in repos]
     if missing:
         sys.exit(f"featured repos not found in data/github.json: {missing}")
@@ -301,7 +302,7 @@ def main():
         cards[f] = tile(label, value, .7 + i * .15)
     cards["monthly"] = monthly(days, stats(days), 1.2)
     for i, name in enumerate(FEATURED):
-        cards[f"repo-{name.lower()}"] = repo_card(repos[name], 2.0 + i * .3)
+        cards[f"repo-{name.split('/')[1].lower()}"] = repo_card(repos[name], 2.0 + i * .3)
     cards["graph"] = graph(weeks, 2.0 + len(FEATURED) * .3)
 
     out = ROOT / "cards"

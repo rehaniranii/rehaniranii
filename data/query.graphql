@@ -7,7 +7,14 @@ query($login: String!) {
       }
     }
     repositories(first: 50, ownerAffiliations: OWNER, privacy: PUBLIC, orderBy: {field: PUSHED_AT, direction: DESC}) {
-      nodes { name description url stargazerCount forkCount pushedAt primaryLanguage { name color } }
+      nodes { ...repo }
+    }
+    repositoriesContributedTo(first: 50, includeUserRepositories: false, contributionTypes: [COMMIT, PULL_REQUEST, REPOSITORY]) {
+      nodes { ...repo }
     }
   }
+}
+
+fragment repo on Repository {
+  name nameWithOwner description url stargazerCount forkCount pushedAt primaryLanguage { name color }
 }
